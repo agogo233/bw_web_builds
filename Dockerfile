@@ -17,20 +17,14 @@
 #    Note: you can use --build-arg to specify the version to build:
 #    docker build -t web_vault_build --build-arg VAULT_VERSION=main .
 
-<<<<<<< HEAD
 # hadolint ignore=DL3007
 FROM node:22-trixie AS build
-=======
-FROM node:22-trixie AS build
-RUN node --version && npm --version
->>>>>>> upstream/master
 
 # Can be a tag, release, but prefer a commit hash because it's not changeable
 # https://github.com/bitwarden/clients/commit/${VAULT_VERSION}
 #
 # Using https://github.com/vaultwarden/vw_web_builds/tree/v2026.2.0
 ARG VAULT_VERSION=3986035910f6ad172c8ceabcd378e2ca0d25349c
-<<<<<<< HEAD
 ENV VAULT_VERSION=${VAULT_VERSION} \
     VAULT_FOLDER=bw_clients \
     CHECKOUT_TAGS=false
@@ -38,20 +32,10 @@ ENV VAULT_VERSION=${VAULT_VERSION} \
 WORKDIR /bw_web_builds
 
 # Copy scripts and optional build environment
-=======
-ENV VAULT_VERSION=$VAULT_VERSION
-ENV VAULT_FOLDER=bw_clients
-ENV CHECKOUT_TAGS=false
-
-RUN mkdir /bw_web_builds
-WORKDIR /bw_web_builds
-
->>>>>>> upstream/master
 COPY scripts ./scripts
 # Use a glob pattern here so builds will continue even if the `.build_env` does not exists
 COPY .build_env* ./
 
-<<<<<<< HEAD
 # Build the web vault and clean up in the same layer to reduce image size
 # hadolint ignore=DL3059
 RUN node --version && npm --version \
@@ -62,15 +46,6 @@ RUN node --version && npm --version \
     && echo "sha256sum: $(sha256sum bw_web_vault.tar.gz)" \
     && rm -rf "${VAULT_FOLDER}" \
     && rm -rf /root/.npm
-=======
-RUN ./scripts/checkout_web_vault.sh
-RUN ./scripts/build_web_vault.sh
-RUN mv "${VAULT_FOLDER}/apps/web/build" ./web-vault
-
-RUN tar -czvf "bw_web_vault.tar.gz" web-vault --owner=0 --group=0
-# Output the sha256sum here so people are able to match the sha256sum from the CI with the assets and the downloaded version if needed
-RUN echo "sha256sum: $(sha256sum bw_web_vault.tar.gz)"
->>>>>>> upstream/master
 
 # We copy the final result as a separate empty image so there's no need to download all the intermediate steps
 # The result is included both uncompressed and as a tar.gz, to be able to use it in the docker images and the github releases directly
