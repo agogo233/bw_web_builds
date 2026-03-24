@@ -18,4 +18,7 @@ web-vault
 *.tar.gz.asc
 *.tar.gz.text
 sha256sums.txt
+<<<<<<< HEAD
 AGENTS.md
+=======
+>>>>>>> upstream/master

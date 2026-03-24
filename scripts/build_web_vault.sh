@@ -24,8 +24,13 @@ npm ci
 pushd apps/web
 npm run dist:oss:selfhost
 
+<<<<<<< HEAD
 # Delete debugging map files to reduce size (~30-40%)
 find build -name "*.map" -delete
+=======
+# Delete debugging map files, optional
+#find build -name "*.map" -delete
+>>>>>>> upstream/master
 
 # Create vw-version.json with the latest tag from the remote repo.
 printf '{"version":"%s"}' \
